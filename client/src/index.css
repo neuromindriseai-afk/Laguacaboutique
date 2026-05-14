@@ -1,0 +1,226 @@
+/**
+ * La Guaca Boutique — Estilos Globales
+ * Diseño: Minimalismo Editorial Latinoamericano
+ *
+ * Paleta:
+ *   Fondo: blanco roto cálido #FAFAF8
+ *   Texto: negro profundo #0D0D0D
+ *   Acento: terracota #C4785A
+ *   Borde: gris arena #E8E4DF
+ *
+ * Tipografía:
+ *   Display: Playfair Display (serif)
+ *   Cuerpo: Inter (sans-serif)
+ */
+
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-terracotta: var(--terracotta);
+
+  /* Fuentes */
+  --font-display: "Playfair Display", Georgia, serif;
+  --font-sans: "Inter", system-ui, sans-serif;
+}
+
+:root {
+  /* ── Paleta boutique premium ─────────────────────────────────────── */
+  --background: oklch(0.99 0.003 80);        /* blanco roto cálido */
+  --foreground: oklch(0.12 0.005 80);        /* negro profundo */
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.12 0.005 80);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.12 0.005 80);
+
+  /* Primario: negro para botones principales */
+  --primary: oklch(0.15 0.005 80);
+  --primary-foreground: oklch(0.99 0.003 80);
+
+  /* Secundario: gris arena */
+  --secondary: oklch(0.96 0.006 80);
+  --secondary-foreground: oklch(0.35 0.01 80);
+
+  --muted: oklch(0.96 0.004 80);
+  --muted-foreground: oklch(0.55 0.01 80);
+
+  /* Acento: terracota suave */
+  --accent: oklch(0.72 0.09 40);
+  --accent-foreground: oklch(0.99 0 0);
+
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.985 0 0);
+
+  --border: oklch(0.91 0.006 80);
+  --input: oklch(0.91 0.006 80);
+  --ring: oklch(0.72 0.09 40);
+
+  /* Terracota como color de acento personalizado */
+  --terracotta: oklch(0.62 0.1 40);
+
+  --radius: 0.25rem; /* Bordes casi cuadrados para estética editorial */
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Tipografía display */
+  .font-display {
+    font-family: var(--font-display);
+  }
+
+  .font-sans {
+    font-family: var(--font-sans);
+  }
+
+  /* Color terracota como clase utilitaria */
+  .text-terracotta {
+    color: var(--terracotta);
+  }
+  .bg-terracotta {
+    background-color: var(--terracotta);
+  }
+  .border-terracotta {
+    border-color: var(--terracotta);
+  }
+
+  /* Cursores */
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]),
+  a[href],
+  select:not(:disabled),
+  input[type="checkbox"]:not(:disabled),
+  input[type="radio"]:not(:disabled) {
+    @apply cursor-pointer;
+  }
+
+  /* Scrollbar oculto para carruseles */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@layer components {
+  .container {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .flex {
+    min-height: 0;
+    min-width: 0;
+  }
+
+  @media (min-width: 640px) {
+    .container {
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .container {
+      padding-left: 2rem;
+      padding-right: 2rem;
+      max-width: 1280px;
+    }
+  }
+}
+
+/* ── Animaciones personalizadas ──────────────────────────────────────────── */
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes cart-bounce {
+  0%, 100% { transform: scale(1); }
+  30%       { transform: scale(1.25) rotate(-8deg); }
+  60%       { transform: scale(1.1) rotate(6deg); }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.5s cubic-bezier(0.23, 1, 0.32, 1) both;
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.6s cubic-bezier(0.23, 1, 0.32, 1) both;
+}
+
+.delay-100 {
+  animation-delay: 100ms;
+}
+
+.delay-200 {
+  animation-delay: 200ms;
+}
+
+.animate-cart-bounce {
+  animation: cart-bounce 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+/* Shimmer para skeletons */
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.animate-shimmer {
+  background: linear-gradient(90deg, #f0ede8 25%, #e8e4df 50%, #f0ede8 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* Transición suave para el carrito */
+@media (prefers-reduced-motion: no-preference) {
+  .transition-transform {
+    transition-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
+  }
+}
