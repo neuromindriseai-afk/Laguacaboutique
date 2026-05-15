@@ -25,14 +25,27 @@ export function formatCOP(price: number): string {
  */
 export function parseSizes(tallasStock: string): SizeStock[] {
   if (!tallasStock) return [];
-  const regex = /([^,()]+)\((\d+)\)/g;
+  
+  // Primero intentamos el formato con stock: "S(2), M(5)"
+  const regexWithStock = /([^,()]+)\((\d+)\)/g;
   const result: SizeStock[] = [];
   let match;
-  while ((match = regex.exec(tallasStock)) !== null) {
+  
+  while ((match = regexWithStock.exec(tallasStock)) !== null) {
     const size = match[1].trim();
     const stock = parseInt(match[2], 10);
     if (size) result.push({ size, stock });
   }
+
+  // Si no encontró nada con el formato anterior, intentamos formato simple: "S, M, L"
+  if (result.length === 0) {
+    const simpleSizes = tallasStock.split(",").map(s => s.trim()).filter(Boolean);
+    return simpleSizes.map(size => ({
+      size,
+      stock: 10 // Stock por defecto si no se especifica
+    }));
+  }
+  
   return result;
 }
 
@@ -48,9 +61,13 @@ export function getAvailableSizes(tallasStock: string): SizeStock[] {
  */
 export function hasSizeInStock(tallasStock: string, sizeQuery: string): boolean {
   const q = sizeQuery.trim().toUpperCase();
-  return parseSizes(tallasStock).some(
-    (s) => s.size.toUpperCase().includes(q) && s.stock > 0
-  );
+  if (!q) return true;
+  
+  return parseSizes(tallasStock).some((s) => {
+    const size = s.size.toUpperCase();
+    // Coincidencia exacta o que la consulta esté contenida (ej: "M" coincide con "M" y "XL" no coincide con "M")
+    return (size === q || size.split("/").includes(q) || size.split("-").includes(q)) && s.stock > 0;
+  });
 }
 
 /**
