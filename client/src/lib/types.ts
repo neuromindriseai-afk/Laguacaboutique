@@ -10,6 +10,9 @@ export interface Product {
   PRECIO: number;
   TALLAS_STOCK: string; // Ej: "S(2), M(5), 40Z(1)"
   IMAGEN_PRINCIPAL: string;
+  IMAGEN_2?: string;
+  IMAGEN_3?: string;
+  IMAGEN_4?: string;
   MOSTRAR: "SÍ" | "SI" | "NO" | string;
   WHATSAPP_PEDIDO: string;
 }

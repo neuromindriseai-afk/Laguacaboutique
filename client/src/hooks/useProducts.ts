@@ -69,6 +69,9 @@ export function useProducts(): ProductsState {
                 PRECIO: parseInt(getColumn(["PRECIO", "precio", "PRICE"]) || "0", 10),
                 TALLAS_STOCK: getColumn(["TALLAS_STOCK", "TALLAS_STOCK", "tallas_stock", "STOCK"]),
                 IMAGEN_PRINCIPAL: getColumn(["IMAGEN_PRINCIPAL", "IMAGEN_PRIM", "imagen_principal", "IMAGE"]),
+                IMAGEN_2: getColumn(["IMAGEN_2", "imagen_2", "IMAGE_2"]),
+                IMAGEN_3: getColumn(["IMAGEN_3", "imagen_3", "IMAGE_3"]),
+                IMAGEN_4: getColumn(["IMAGEN_4", "imagen_4", "IMAGE_4"]),
                 MOSTRAR: getColumn(["MOSTRAR", "mostrar", "SHOW"]) || "NO",
                 WHATSAPP_PEDIDO: getColumn(["WHATSAPP_PEDIDO", "WHATSAPP_PE", "whatsapp_pedido", "WHATSAPP"]),
               };

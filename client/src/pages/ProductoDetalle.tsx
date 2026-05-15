@@ -36,6 +36,17 @@ export default function ProductoDetalle() {
 
   const [selectedSize, setSelectedSize] = useState<string>("");
   const [added, setAdded] = useState(false);
+  const [activeImageIndex, setActiveImageIndex] = useState(0);
+
+  const productImages = useMemo(() => {
+    if (!product) return [];
+    return [
+      product.IMAGEN_PRINCIPAL,
+      product.IMAGEN_2,
+      product.IMAGEN_3,
+      product.IMAGEN_4
+    ].filter(Boolean) as string[];
+  }, [product]);
 
   // Recomendaciones: misma categoría, excluyendo el producto actual
   const recommendations = useMemo(() => {
@@ -123,19 +134,54 @@ export default function ProductoDetalle() {
           {/* Layout principal */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10 lg:gap-16">
 
-            {/* Imagen */}
-            <div className="relative">
+            {/* Imagen y Galería */}
+            <div className="relative space-y-4">
               <div className="aspect-[3/4] rounded-sm overflow-hidden bg-stone-50 sticky top-24">
                 <img
-                  src={product.IMAGEN_PRINCIPAL}
+                  src={productImages[activeImageIndex]}
                   alt={product.NOMBRE_COMPLETO}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover transition-all duration-300"
                   onError={(e) => {
                     (e.target as HTMLImageElement).src =
                       "https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=600&q=80";
                   }}
                 />
+                
+                {/* Miniaturas (solo si hay más de una imagen) */}
+                {productImages.length > 1 && (
+                  <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 px-3 py-2 bg-white/80 backdrop-blur-sm rounded-full shadow-sm">
+                    {productImages.map((img, idx) => (
+                      <button
+                        key={idx}
+                        onClick={() => setActiveImageIndex(idx)}
+                        className={cn(
+                          "w-2.5 h-2.5 rounded-full transition-all duration-200",
+                          activeImageIndex === idx ? "bg-stone-900 w-6" : "bg-stone-300 hover:bg-stone-400"
+                        )}
+                        aria-label={`Ver imagen ${idx + 1}`}
+                      />
+                    ))}
+                  </div>
+                )}
               </div>
+
+              {/* Tiras de miniaturas opcional para desktop */}
+              {productImages.length > 1 && (
+                <div className="grid grid-cols-4 gap-2">
+                  {productImages.map((img, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => setActiveImageIndex(idx)}
+                      className={cn(
+                        "aspect-square rounded-sm overflow-hidden border-2 transition-all",
+                        activeImageIndex === idx ? "border-stone-900" : "border-transparent opacity-60 hover:opacity-100"
+                      )}
+                    >
+                      <img src={img} alt="" className="w-full h-full object-cover" />
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
 
             {/* Info del producto */}
