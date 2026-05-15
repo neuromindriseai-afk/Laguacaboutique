@@ -5,7 +5,7 @@
  */
 import { useMemo, useState } from "react";
 import { useRoute } from "wouter";
-import { Search, X, RefreshCw, SlidersHorizontal, List, Grid3x3 } from "lucide-react";
+import { Search, X, RefreshCw, SlidersHorizontal, List, Grid3x3, MessageCircle } from "lucide-react";
 import { Helmet, HelmetProvider } from "react-helmet-async";
 import { useProducts } from "@/hooks/useProducts";
 import ProductCard from "@/components/ProductCard";
@@ -290,6 +290,30 @@ export default function Catalogo() {
               ))}
             </div>
           )}
+
+          {/* Footer sutil de Solaris IA */}
+          <div className="mt-16 pt-8 border-t border-stone-100 text-center">
+            <p className="text-[10px] text-stone-400 font-sans tracking-wide mb-2">
+              Catálogo elaborado por{" "}
+              <a
+                href="https://instagram.com/solaris.ia"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-stone-500 hover:text-stone-700 transition-colors font-medium"
+              >
+                @solaris.ia
+              </a>
+            </p>
+            <a
+              href="https://wa.me/573126582360"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[10px] text-stone-400 hover:text-stone-600 font-sans transition-colors inline-flex items-center gap-1"
+            >
+              <MessageCircle className="w-3 h-3" />
+              +57 312 658 2360 — Desarrollos a la medida
+            </a>
+          </div>
         </div>
       </main>
     </HelmetProvider>
