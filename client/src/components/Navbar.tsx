@@ -48,19 +48,19 @@ export default function Navbar() {
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16 md:h-20">
-            {/* Logo + Nombre */}
-            <Link href="/" className="flex items-center gap-2.5 group">
-              <img
-                src={STORE_CONFIG.LOGO_URL}
-                alt="La Guaca Logo"
-                className="w-8 h-8 md:w-10 md:h-10 transition-transform duration-200 group-hover:scale-110"
-              />
+            {/* Logo Tipográfico */}
+            <Link href="/" className="flex items-center gap-3 group">
               <div className="flex flex-col">
-                <span className="font-display text-lg md:text-2xl font-bold tracking-tight text-stone-900 group-hover:text-terracotta transition-colors duration-200 leading-none">
-                  La Guaca
-                </span>
-                <span className="hidden sm:block text-[10px] text-stone-400 font-sans tracking-widest uppercase">
-                  Boutique
+                <div className="flex items-baseline gap-1.5">
+                  <span className="font-display text-xl md:text-3xl font-bold tracking-tighter text-stone-900 group-hover:text-stone-700 transition-colors duration-200 leading-none">
+                    La Guaca
+                  </span>
+                  <span className="text-[10px] md:text-xs text-stone-400 font-sans tracking-[0.2em] uppercase font-light">
+                    Boutique
+                  </span>
+                </div>
+                <span className="text-[9px] text-stone-500 font-sans tracking-widest uppercase mt-0.5">
+                  Montería
                 </span>
               </div>
             </Link>
