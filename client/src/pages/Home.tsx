@@ -5,9 +5,9 @@
  * 2. Categorías en grid horizontal (miniaturas circulares)
  * 3. Productos recomendados (primeros 6 con MOSTRAR = "SÍ")
  */
-import { useMemo } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { Link } from "wouter";
-import { ArrowRight, RefreshCw } from "lucide-react";
+import { ArrowRight, RefreshCw, ChevronLeft, ChevronRight } from "lucide-react";
 import { HelmetProvider, Helmet } from "react-helmet-async";
 import { useProducts } from "@/hooks/useProducts";
 import ProductCard from "@/components/ProductCard";
@@ -15,10 +15,36 @@ import CategoryCard from "@/components/CategoryCard";
 import ProductSkeleton from "@/components/ProductSkeleton";
 import { STORE_CONFIG } from "@/lib/config";
 
-const HERO_IMAGE = "https://d2xsxph8kpxj0f.cloudfront.net/310519663655771615/3fkX8eW2HZmRY4XUxmMmsm/hero-banner-AwesEheoSJzRKdeWeWwra8.webp";
+// Banner de imágenes - Se pueden agregar más URLs aquí
+const HERO_IMAGES = [
+  "https://d2xsxph8kpxj0f.cloudfront.net/310519663655771615/3fkX8eW2HZmRY4XUxmMmsm/hero-banner-AwesEheoSJzRKdeWeWwra8.webp",
+  // Agrega aquí las URLs de las imágenes del negocio cuando las tengas
+];
 
 export default function Home() {
   const { products, loading, error, refresh } = useProducts();
+  
+  // Estado para el carrusel del banner
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  // Auto-rotación del banner (cada 5 segundos)
+  useEffect(() => {
+    if (HERO_IMAGES.length <= 1) return;
+    
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % HERO_IMAGES.length);
+    }, 5000);
+
+    return () => clearInterval(timer);
+  }, []);
+
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % HERO_IMAGES.length);
+  };
+
+  const prevSlide = () => {
+    setCurrentSlide((prev) => (prev - 1 + HERO_IMAGES.length) % HERO_IMAGES.length);
+  };
 
   // Extraer categorías únicas con conteo
   const categories = useMemo(() => {
@@ -40,16 +66,60 @@ export default function Home() {
       </Helmet>
 
       <main>
-        {/* ── Hero ─────────────────────────────────────────────────────────── */}
+        {/* ── Hero con carrusel ─────────────────────────────────────────────────────────── */}
         <section className="relative h-[70vh] min-h-[480px] max-h-[720px] overflow-hidden">
-          {/* Imagen de fondo */}
-          <img
-            src={HERO_IMAGE}
-            alt="La Guaca Boutique"
-            className="absolute inset-0 w-full h-full object-cover object-center"
-          />
+          {/* Imágenes del carrusel */}
+          {HERO_IMAGES.map((img, idx) => (
+            <div
+              key={idx}
+              className={`absolute inset-0 transition-opacity duration-1000 ${
+                idx === currentSlide ? 'opacity-100' : 'opacity-0'
+              }`}
+            >
+              <img
+                src={img}
+                alt={`La Guaca Boutique - Vista ${idx + 1}`}
+                className="w-full h-full object-cover object-center"
+              />
+            </div>
+          ))}
+          
           {/* Overlay gradiente */}
           <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/30 to-transparent" />
+
+          {/* Botones de navegación del carrusel */}
+          {HERO_IMAGES.length > 1 && (
+            <>
+              <button
+                onClick={prevSlide}
+                className="absolute left-4 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 text-white flex items-center justify-center hover:bg-white/30 transition-all duration-200"
+                aria-label="Imagen anterior"
+              >
+                <ChevronLeft className="w-6 h-6" />
+              </button>
+              <button
+                onClick={nextSlide}
+                className="absolute right-4 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 text-white flex items-center justify-center hover:bg-white/30 transition-all duration-200"
+                aria-label="Imagen siguiente"
+              >
+                <ChevronRight className="w-6 h-6" />
+              </button>
+              
+              {/* Indicadores de diapositivas */}
+              <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-10 flex gap-2">
+                {HERO_IMAGES.map((_, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => setCurrentSlide(idx)}
+                    className={`h-2 rounded-full transition-all duration-300 ${
+                      idx === currentSlide ? 'w-8 bg-white' : 'w-2 bg-white/50'
+                    }`}
+                    aria-label={`Ir a imagen ${idx + 1}`}
+                  />
+                ))}
+              </div>
+            </>
+          )}
 
           {/* Contenido */}
           <div className="relative h-full flex items-center">

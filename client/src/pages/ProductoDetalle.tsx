@@ -136,6 +136,7 @@ export default function ProductoDetalle() {
 
             {/* Imagen y Galería */}
             <div className="relative space-y-4">
+              {/* Imagen principal */}
               <div className="aspect-[3/4] rounded-sm overflow-hidden bg-stone-50 sticky top-24">
                 <img
                   src={productImages[activeImageIndex]}
@@ -146,40 +147,30 @@ export default function ProductoDetalle() {
                       "https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=600&q=80";
                   }}
                 />
-                
-                {/* Miniaturas (solo si hay más de una imagen) */}
-                {productImages.length > 1 && (
-                  <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 px-3 py-2 bg-white/80 backdrop-blur-sm rounded-full shadow-sm">
+              </div>
+
+              {/* Carrusel de miniaturas debajo de la imagen principal */}
+              {productImages.length > 1 && (
+                <div className="relative">
+                  <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
                     {productImages.map((img, idx) => (
                       <button
                         key={idx}
                         onClick={() => setActiveImageIndex(idx)}
                         className={cn(
-                          "w-2.5 h-2.5 rounded-full transition-all duration-200",
-                          activeImageIndex === idx ? "bg-stone-900 w-6" : "bg-stone-300 hover:bg-stone-400"
+                          "flex-shrink-0 aspect-square rounded-sm overflow-hidden border-2 transition-all",
+                          "hover:opacity-80",
+                          activeImageIndex === idx ? "border-stone-900" : "border-transparent opacity-60"
                         )}
-                        aria-label={`Ver imagen ${idx + 1}`}
-                      />
+                      >
+                        <img 
+                          src={img} 
+                          alt={`Vista ${idx + 1}`} 
+                          className="w-full h-full object-cover" 
+                        />
+                      </button>
                     ))}
                   </div>
-                )}
-              </div>
-
-              {/* Tiras de miniaturas opcional para desktop */}
-              {productImages.length > 1 && (
-                <div className="grid grid-cols-4 gap-2">
-                  {productImages.map((img, idx) => (
-                    <button
-                      key={idx}
-                      onClick={() => setActiveImageIndex(idx)}
-                      className={cn(
-                        "aspect-square rounded-sm overflow-hidden border-2 transition-all",
-                        activeImageIndex === idx ? "border-stone-900" : "border-transparent opacity-60 hover:opacity-100"
-                      )}
-                    >
-                      <img src={img} alt="" className="w-full h-full object-cover" />
-                    </button>
-                  ))}
                 </div>
               )}
             </div>
@@ -243,15 +234,6 @@ export default function ProductoDetalle() {
                       </button>
                     );
                   })}
-                </div>
-
-                {/* Resumen de stock */}
-                <div className="mt-3 flex flex-wrap gap-2">
-                  {allSizes.map(({ size, stock }) => (
-                    <span key={size} className="text-[11px] text-stone-400 font-sans">
-                      {size}: {stock > 0 ? `${stock} disp.` : "Agotado"}
-                    </span>
-                  ))}
                 </div>
               </div>
 

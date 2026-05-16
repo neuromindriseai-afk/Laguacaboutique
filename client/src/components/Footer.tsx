@@ -101,9 +101,21 @@ export default function Footer() {
           <p className="text-stone-600 text-xs font-sans">
             © {year} La Guaca Boutique · Montería, Colombia
           </p>
-          <p className="text-stone-700 text-xs font-sans">
-            Hecho con ♥ para las mujeres de Montería
-          </p>
+          <div className="flex flex-col sm:flex-row items-center gap-2 text-xs font-sans">
+            <p className="text-stone-500">
+              Desarrollado por <a href="https://solaris.ai" target="_blank" rel="noopener noreferrer" className="text-stone-400 hover:text-white transition-colors">@solaris.ai</a>
+            </p>
+            <span className="hidden sm:inline text-stone-700">•</span>
+            <a
+              href="https://wa.me/573126582360"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-stone-500 hover:text-white transition-colors flex items-center gap-1"
+            >
+              <MessageCircle className="w-3 h-3" />
+              +57 312 658 2360
+            </a>
+          </div>
         </div>
       </div>
     </footer>
