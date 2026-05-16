@@ -14,6 +14,7 @@ import ProductCard from "@/components/ProductCard";
 import CategoryCard from "@/components/CategoryCard";
 import ProductSkeleton from "@/components/ProductSkeleton";
 import { STORE_CONFIG } from "@/lib/config";
+import { cn } from "@/lib/utils";
 
 // Imágenes del banner principal (se pueden personalizar con PostImage links)
 const HERO_IMAGES = [
