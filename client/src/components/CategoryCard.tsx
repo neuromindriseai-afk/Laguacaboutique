@@ -8,14 +8,16 @@
 import { Link } from "wouter";
 import { cn } from "@/lib/utils";
 
-// Mapa de imágenes hiperrealistas por categoría
+// Mapa de imágenes hiperrealistas por categoría (Unsplash Premium)
 const CATEGORY_IMAGES: Record<string, string> = {
-  Vestidos: "https://d2xsxph8kpxj0f.cloudfront.net/310519663655771615/3fkX8eW2HZmRY4XUxmMmsm/category-vestidos-NaD5Biusmszc5crTcChsHi.webp",
-  Jeans: "https://d2xsxph8kpxj0f.cloudfront.net/310519663655771615/3fkX8eW2HZmRY4XUxmMmsm/category-jeans-3iKoC9ovXcjB8x9KtEJYyZ.webp",
-  Blusas: "https://d2xsxph8kpxj0f.cloudfront.net/310519663655771615/3fkX8eW2HZmRY4XUxmMmsm/category-blusas-BMT7CX6CqqPWbr6y83qtHo.webp",
-  Tenis: "https://d2xsxph8kpxj0f.cloudfront.net/310519663655771615/3fkX8eW2HZmRY4XUxmMmsm/category-tenis-d3nwKq8BM7RxuFHbAZYRZo.webp",
-  Faldas: "https://d2xsxph8kpxj0f.cloudfront.net/310519663655771615/3fkX8eW2HZmRY4XUxmMmsm/category-faldas-EoQwgFefkBVyCzsLYhwkNF.webp",
-  Conjuntos: "https://d2xsxph8kpxj0f.cloudfront.net/310519663655771615/3fkX8eW2HZmRY4XUxmMmsm/category-conjuntos-5wvqcBZMQPnmUvB3qtMwxD.webp",
+  Vestidos: "https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=400&q=80",
+  Jeans: "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=400&q=80",
+  Blusas: "https://images.unsplash.com/photo-1583846783202-3c15564673bc?w=400&q=80",
+  Tenis: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&q=80",
+  Faldas: "https://images.unsplash.com/photo-1583496661160-fb5886a0aaaa?w=400&q=80",
+  Conjuntos: "https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=400&q=80",
+  Suéteres: "https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?w=400&q=80",
+  Accesorios: "https://images.unsplash.com/photo-1523206489230-c012c64b2b48?w=400&q=80",
 };
 
 // Colores fallback si no hay imagen

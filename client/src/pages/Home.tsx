@@ -5,7 +5,7 @@
  * 2. Categorías en grid horizontal (miniaturas circulares)
  * 3. Productos recomendados (primeros 6 con MOSTRAR = "SÍ")
  */
-import { useMemo } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { Link } from "wouter";
 import { ArrowRight, RefreshCw } from "lucide-react";
 import { HelmetProvider, Helmet } from "react-helmet-async";
@@ -15,9 +15,23 @@ import CategoryCard from "@/components/CategoryCard";
 import ProductSkeleton from "@/components/ProductSkeleton";
 import { STORE_CONFIG } from "@/lib/config";
 
-const HERO_IMAGE = "https://d2xsxph8kpxj0f.cloudfront.net/310519663655771615/3fkX8eW2HZmRY4XUxmMmsm/hero-banner-AwesEheoSJzRKdeWeWwra8.webp";
+// Imágenes del banner principal (se pueden personalizar con PostImage links)
+const HERO_IMAGES = [
+  "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=1600&q=80", // Moda editorial
+  "https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=1600&q=80", // Tienda elegante
+  "https://images.unsplash.com/photo-1445205170230-053b830c6050?w=1600&q=80"  // Colección nueva
+];
 
 export default function Home() {
+  const [currentHero, setCurrentHero] = useState(0);
+
+  // Auto-cambio de banner cada 5 segundos
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentHero((prev) => (prev + 1) % HERO_IMAGES.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, []);
   const { products, loading, error, refresh } = useProducts();
 
   // Extraer categorías únicas con conteo
@@ -40,52 +54,78 @@ export default function Home() {
       </Helmet>
 
       <main>
-        {/* ── Hero ─────────────────────────────────────────────────────────── */}
-        <section className="relative h-[70vh] min-h-[480px] max-h-[720px] overflow-hidden">
-          {/* Imagen de fondo */}
-          <img
-            src={HERO_IMAGE}
-            alt="La Guaca Boutique"
-            className="absolute inset-0 w-full h-full object-cover object-center"
-          />
+        {/* ── Hero (Carrusel de Banners) ─────────────────────────────────────── */}
+        <section className="relative h-[75vh] min-h-[500px] max-h-[800px] overflow-hidden">
+          {/* Imágenes de fondo con transición */}
+          {HERO_IMAGES.map((img, idx) => (
+            <div
+              key={idx}
+              className={cn(
+                "absolute inset-0 transition-opacity duration-1000 ease-in-out",
+                currentHero === idx ? "opacity-100 z-0" : "opacity-0 -z-10"
+              )}
+            >
+              <img
+                src={img}
+                alt={`Banner ${idx + 1}`}
+                className="w-full h-full object-cover object-center scale-105 animate-slow-zoom"
+              />
+              <div className="absolute inset-0 bg-black/40" />
+            </div>
+          ))}
+
           {/* Overlay gradiente */}
-          <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/30 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent z-10" />
 
           {/* Contenido */}
-          <div className="relative h-full flex items-center">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-              <div className="max-w-lg">
+          <div className="relative h-full flex items-center z-20">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full text-center">
+              <div className="max-w-2xl mx-auto">
                 {/* Eyebrow */}
-                <p className="text-stone-300 text-xs font-sans tracking-[0.3em] uppercase mb-4 animate-fade-in">
+                <p className="text-stone-300 text-xs font-sans tracking-[0.4em] uppercase mb-6 animate-fade-in">
                   {STORE_CONFIG.STORE_CITY}
                 </p>
 
                 {/* Título */}
-                <h1 className="font-display text-5xl sm:text-6xl md:text-7xl font-bold text-white leading-none mb-4 animate-fade-in-up">
+                <h1 className="font-display text-6xl sm:text-7xl md:text-8xl font-bold text-white leading-none mb-6 animate-fade-in-up drop-shadow-2xl">
                   La Guaca
                 </h1>
 
                 {/* Eslogan */}
-                <p className="text-stone-200 text-lg sm:text-xl font-sans font-light leading-relaxed mb-8 animate-fade-in-up delay-100">
+                <p className="text-stone-100 text-xl sm:text-2xl font-sans font-light leading-relaxed mb-10 animate-fade-in-up delay-100">
                   {STORE_CONFIG.STORE_TAGLINE}
                 </p>
 
                 {/* CTA */}
-                <div className="flex flex-wrap gap-4 animate-fade-in-up delay-200">
+                <div className="flex flex-wrap justify-center gap-5 animate-fade-in-up delay-200">
                   <Link href="/catalogo">
-                    <button className="flex items-center gap-2 px-7 py-3.5 bg-white text-stone-900 font-sans font-semibold text-sm tracking-wide hover:bg-stone-100 transition-all duration-200 active:scale-[0.98] rounded-sm">
+                    <button className="flex items-center gap-3 px-8 py-4 bg-white text-stone-900 font-sans font-bold text-sm tracking-widest uppercase hover:bg-stone-100 transition-all duration-300 active:scale-95 rounded-sm shadow-xl">
                       Ver Catálogo
                       <ArrowRight className="w-4 h-4" />
                     </button>
                   </Link>
                   <Link href="/contacto">
-                    <button className="flex items-center gap-2 px-7 py-3.5 border border-white/60 text-white font-sans font-semibold text-sm tracking-wide hover:bg-white/10 transition-all duration-200 active:scale-[0.98] rounded-sm">
-                      Cómo llegar
+                    <button className="flex items-center gap-3 px-8 py-4 border-2 border-white/80 text-white font-sans font-bold text-sm tracking-widest uppercase hover:bg-white/10 transition-all duration-300 active:scale-95 rounded-sm">
+                      Ubicación
                     </button>
                   </Link>
                 </div>
               </div>
             </div>
+          </div>
+
+          {/* Indicadores de Carrusel */}
+          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-3 z-30">
+            {HERO_IMAGES.map((_, idx) => (
+              <button
+                key={idx}
+                onClick={() => setCurrentHero(idx)}
+                className={cn(
+                  "w-2.5 h-2.5 rounded-full transition-all duration-500",
+                  currentHero === idx ? "bg-white w-10" : "bg-white/40 hover:bg-white/60"
+                )}
+              />
+            ))}
           </div>
         </section>
 

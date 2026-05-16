@@ -147,15 +147,15 @@ export default function ProductoDetalle() {
                   }}
                 />
                 
-                {/* Miniaturas (solo si hay más de una imagen) */}
+                {/* Indicador de Carrusel (Puntos) */}
                 {productImages.length > 1 && (
-                  <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 px-3 py-2 bg-white/80 backdrop-blur-sm rounded-full shadow-sm">
-                    {productImages.map((img, idx) => (
+                  <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 px-3 py-2 bg-white/80 backdrop-blur-sm rounded-full shadow-sm z-10">
+                    {productImages.map((_, idx) => (
                       <button
                         key={idx}
                         onClick={() => setActiveImageIndex(idx)}
                         className={cn(
-                          "w-2.5 h-2.5 rounded-full transition-all duration-200",
+                          "w-2.5 h-2.5 rounded-full transition-all duration-300",
                           activeImageIndex === idx ? "bg-stone-900 w-6" : "bg-stone-300 hover:bg-stone-400"
                         )}
                         aria-label={`Ver imagen ${idx + 1}`}
@@ -165,16 +165,16 @@ export default function ProductoDetalle() {
                 )}
               </div>
 
-              {/* Tiras de miniaturas opcional para desktop */}
+              {/* Carrusel de Miniaturas (Desktop y Móvil) */}
               {productImages.length > 1 && (
-                <div className="grid grid-cols-4 gap-2">
+                <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide snap-x">
                   {productImages.map((img, idx) => (
                     <button
                       key={idx}
                       onClick={() => setActiveImageIndex(idx)}
                       className={cn(
-                        "aspect-square rounded-sm overflow-hidden border-2 transition-all",
-                        activeImageIndex === idx ? "border-stone-900" : "border-transparent opacity-60 hover:opacity-100"
+                        "flex-shrink-0 w-20 h-24 rounded-sm overflow-hidden border-2 transition-all snap-start",
+                        activeImageIndex === idx ? "border-stone-900 scale-105" : "border-stone-100 opacity-70 hover:opacity-100"
                       )}
                     >
                       <img src={img} alt="" className="w-full h-full object-cover" />
@@ -245,12 +245,18 @@ export default function ProductoDetalle() {
                   })}
                 </div>
 
-                {/* Resumen de stock */}
-                <div className="mt-3 flex flex-wrap gap-2">
+                {/* Disponibilidad (Ocultando stock exacto) */}
+                <div className="mt-3 flex flex-wrap gap-3">
                   {allSizes.map(({ size, stock }) => (
-                    <span key={size} className="text-[11px] text-stone-400 font-sans">
-                      {size}: {stock > 0 ? `${stock} disp.` : "Agotado"}
-                    </span>
+                    <div key={size} className="flex items-center gap-1.5">
+                      <div className={cn(
+                        "w-1.5 h-1.5 rounded-full",
+                        stock > 0 ? "bg-green-400" : "bg-stone-200"
+                      )} />
+                      <span className="text-[11px] text-stone-400 font-sans uppercase tracking-wider">
+                        {size}: {stock > 0 ? "Disponible" : "Agotado"}
+                      </span>
+                    </div>
                   ))}
                 </div>
               </div>
